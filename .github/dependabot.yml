@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/images/jenkins/alpine" 
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/images/maven/jdk11-alpine" 
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/images/maven/jdk8-alpine" 
+    schedule:
+      interval: "daily"
