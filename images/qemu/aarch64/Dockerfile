@@ -5,15 +5,18 @@ ENV QEMU_TARBALL="qemu-${QEMU_VERSION}.tar.xz"
 
 WORKDIR /qemu
 
-RUN apt-get update
-RUN apt-get install --yes --no-install-recommends wget
-RUN wget "https://download.qemu.org/${QEMU_TARBALL}"
+# Download QEMU
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends wget gpg && \
+    wget "https://download.qemu.org/${QEMU_TARBALL}" && \
+    wget "https://download.qemu.org/${QEMU_TARBALL}.sig" && \
+    apt-get remove --purge --yes wget
 
 # Verify signatures
-RUN apt-get install --yes --no-install-recommends gpg
-RUN wget "https://download.qemu.org/${QEMU_TARBALL}.sig"
-RUN gpg --keyserver keyserver.ubuntu.com --recv-keys CEACC9E15534EBABB82D3FA03353C9CEF108B584
-RUN gpg --verify "${QEMU_TARBALL}.sig" "${QEMU_TARBALL}"
+RUN apt-get install --yes --no-install-recommends gpg && \
+    gpg --keyserver keyserver.ubuntu.com --recv-keys CEACC9E15534EBABB82D3FA03353C9CEF108B584 && \
+    gpg --verify "${QEMU_TARBALL}.sig" "${QEMU_TARBALL}" && \
+    apt-get remove --purge --yes gpg
 
 # Extract source tarball
 RUN apt-get install --yes --no-install-recommends pkg-config
@@ -31,8 +34,10 @@ RUN apt-get install --yes --no-install-recommends libfdt-dev zlib1g-dev
 
 # Not required or specified anywhere but supress build warnings
 RUN apt-get install --yes --no-install-recommends flex bison
-RUN "qemu-${QEMU_VERSION}/configure" --static --target-list=arm-softmmu,aarch64-softmmu
-RUN make -j$(nproc)
+
+RUN "qemu-${QEMU_VERSION}/configure" --static \
+    --target-list=arm-softmmu,aarch64-softmmu && \
+    make -j$(nproc)
 
 # Strip the binary, this gives a substantial size reduction!
 RUN strip "arm-softmmu/qemu-system-arm" "aarch64-softmmu/qemu-system-aarch64"
