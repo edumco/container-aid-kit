@@ -11,4 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file images/qemu/aarch64/Dockerfile --tag qemu:$(date +%s)
+      run: docker build . --file images/qemu/aarch64/Dockerfile --tag qemu:aarch64-$(date +%s)
+    - name: Create a Release
+    - uses: actions/create-release@v1.1.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }} 
+
+    
