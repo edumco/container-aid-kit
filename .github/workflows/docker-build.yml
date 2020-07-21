@@ -15,7 +15,7 @@ jobs:
       run: docker build . --file images/qemu/aarch64/Dockerfile --tag qemu:aarch64
     
     - name: Save image 
-      run: docker save --output qemu:aarch64.tar qemu:aarch64
+      run: docker save --output aarch64.tar qemu:aarch64
     
     - name: Create a Release
       uses: actions/create-release@v1.1.2
@@ -28,4 +28,4 @@ jobs:
     - name: Upload image
       uses: actions/upload-artifact@v2
       with:
-        path: qemu:aarch64.tar
+        path: aarch64.tar
