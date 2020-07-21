@@ -3,17 +3,19 @@ name: Docker Image CI
 on: [push, pull_request]
 
 jobs:
-
+  
   qemu:
+    
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v2
       
     - name: Build the Docker image
-      run: docker build . --file images/qemu/aarch64/Dockerfile --tag qemu:aarch64-$(date +%s)
+      run: docker build . --file images/qemu/aarch64/Dockerfile --tag qemu:aarch64
     
     - name: Save image 
-      run: docker save --output qemu:aarch64-$(date +%s) qemu:aarch64-$(date +%s) 
+      run: docker save --output qemu:aarch64.tar qemu:aarch64
     
     - name: Create a Release
       uses: actions/create-release@v1.1.2
@@ -26,4 +28,4 @@ jobs:
     - name: Upload image
       uses: actions/upload-artifact@v2
       with:
-        path: qemu:aarch64-$(date +%s)
+        path: qemu:aarch64.tar
