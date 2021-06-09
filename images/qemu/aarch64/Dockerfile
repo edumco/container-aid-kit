@@ -27,6 +27,7 @@ RUN apt-get update && \
     apt-get install --yes --no-install-recommends python \
     build-essential \
     libglib2.0-dev \
+    apt-utils \
     libpixman-1-dev
 
 # These don't seem to be required but are specified here: https://wiki.qemu.org/Hosts/Linux
