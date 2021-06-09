@@ -1,6 +1,6 @@
 FROM debian:buster-slim AS qemu-base
 
-ARG QEMU_VERSION=4.2.1
+ARG QEMU_VERSION=6.0.0
 ENV QEMU_NAME="qemu-${QEMU_VERSION}"
 ENV QEMU_TARBALL="${QEMU_NAME}.tar.xz"
 
